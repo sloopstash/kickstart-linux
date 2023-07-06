@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "sloopstash/ubuntu-18-04-server"
 
  # Define virtual machine name.
   config.vm.define "sloopstash-ubuntu-server"
@@ -61,6 +61,9 @@ Vagrant.configure("2") do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
+    # Enable USB controller for the virtual machine.
+    vb.customize ["modifyvm",:id,"--usb","on"]
+
     # Disable GUI when booting the virtual machine.
     vb.gui = false
   
@@ -77,4 +80,9 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
+  config.vm.provision "shell", inline: <<-SHELL
+    apt update
+    apt upgrade -y
+    apt install -y wget vim net-tools gcc make tar git unzip sysstat tree
+  SHELL
 end
