@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos/7"
+  config.vm.box = "sloopstash/centos-7-server"
 
   # Define virtual machine name.
   config.vm.define "sloopstash-centos-server"
@@ -61,11 +61,17 @@ Vagrant.configure("2") do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
+    # Enable USB controller for the virtual machine.
+    vb.customize ["modifyvm",:id,"--usb","on"]
+
     # Disable GUI when booting the virtual machine.
     vb.gui = false
   
     # Allocate memory to the virtual machine.
     vb.memory = "2048"
+
+    # Allocate processors to the virtual machine.
+    vb.cpus = "1"
 
     # Set name for the virtual machine.
     vb.name = "sloopstash-centos-server"
@@ -77,4 +83,10 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
+  config.vm.provision "shell", inline: <<-SHELL
+    systemctl stop postfix.service
+    systemctl disable postfix.service
+    yum update -y
+    yum install -y wget vim net-tools initscripts gcc make tar bind-utils nc git unzip sysstat tree
+  SHELL
 end
