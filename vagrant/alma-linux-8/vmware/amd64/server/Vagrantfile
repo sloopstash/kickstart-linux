@@ -12,14 +12,14 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "sloopstash/rocky-linux-9"
+  config.vm.box = "sloopstash/alma-linux-8"
   config.vm.box_version = "1.1.1"
 
  # Define virtual machine name.
-  config.vm.define "sloopstash-rocky-linux-9-server"
+  config.vm.define "sloopstash-alma-linux-8-server"
 
   # Set virtual machine hostname.
-  config.vm.hostname = "sloopstash-rocky-linux-9-server"
+  config.vm.hostname = "sloopstash-alma-linux-8-server"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.201.10"
+  config.vm.network "private_network", ip: "192.168.201.7"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -78,7 +78,7 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-   config.vm.provision "shell", inline: <<-SHELL
+ config.vm.provision "shell", inline: <<-SHELL
     dnf update -y
     dnf install -y wget vim net-tools initscripts gcc make tar bind-utils nc git unzip sysstat tree
   SHELL
