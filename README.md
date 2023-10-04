@@ -1,2 +1,2 @@
 # Kickstart Linux
-The ultimate aim of this Linux starter-kit is to help you understand and learn Linux the right way to enhance your DevOps skills.
+Our Linux starter-kit repository contains Vagrant VM configurations and Shell scripts required to build, automate, and manage virtual machines on Linux, Windows, and Mac host machines.
