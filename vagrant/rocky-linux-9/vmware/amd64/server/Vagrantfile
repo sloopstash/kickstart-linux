@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
    config.vm.provision "shell", inline: <<-SHELL
-    dnf update -y
+   dnf update -y
     dnf install -y wget vim net-tools initscripts gcc make tar bind-utils nc git unzip sysstat tree
   SHELL
 end
