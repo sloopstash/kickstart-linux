@@ -7,7 +7,7 @@
 if [ `whoami` == 'root' ]; then
   sleep 1;
 else
-  printf "Please run this script as root or sudo.\n\n";
+  printf "Please run this script as root or sudo.\n";
   exit 1;
 fi
 
@@ -15,11 +15,11 @@ fi
 function load() {
   read -p "Enter time span of system load (1,5,15):" time;
   if [ $time -eq 1 ]; then
-    output=$(uptime | awk '{print $10}' | sed 's/,//');
+    output=$(cat /proc/loadavg | awk '{print $1}');
   elif [ $time -eq 5 ]; then
-    output=$(uptime | awk '{print $11}' | sed 's/,//');
+    output=$(cat /proc/loadavg | awk '{print $2}');
   elif [ $time -eq 15 ]; then
-    output=$(uptime | awk '{print $12}' | sed 's/,//');
+    output=$(cat /proc/loadavg | awk '{print $3}');
   else
     printf "OOPS! Invalid input.\n";
     exit 1;
@@ -47,11 +47,11 @@ function memory() {
 function storage() {
   read -p "Enter usage category of system storage (total,used,free):" usage;
   if [ $usage == 'total' ]; then
-    output=$(df -Th | grep '/dev/sda1' |  awk '{print $3}' | sed 's/G//');
+    output=$(df -Th | grep '/dev/sda1' | awk '{print $3}' | sed 's/G//');
   elif [ $usage == 'used' ]; then
-    output=$(df -Th | grep '/dev/sda1' |  awk '{print $4}' | sed 's/G//');
+    output=$(df -Th | grep '/dev/sda1' | awk '{print $4}' | sed 's/G//');
   elif [ $usage == 'free' ]; then
-    output=$(df -Th | grep '/dev/sda1' |  awk '{print $5}' | sed 's/G//');
+    output=$(df -Th | grep '/dev/sda1' | awk '{print $5}' | sed 's/G//');
   else
     printf "OOPS! Invalid input.\n";
     exit 1;
