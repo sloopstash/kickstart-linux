@@ -6,7 +6,6 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-config.vm.box_version = "1.1.1"
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -14,8 +13,9 @@ config.vm.box_version = "1.1.1"
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "sloopstash/alma-linux-9"
+  config.vm.box_version = "1.1.1"
 
- # Define virtual machine name.
+  # Define virtual machine name.
   config.vm.define "sloopstash-alma-linux-9-server"
 
   # Set virtual machine hostname.
@@ -85,8 +85,14 @@ config.vm.box_version = "1.1.1"
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    # Update installed packages.
     dnf update
-    dnf upgrade -y
-    dnf install -y wget vim net-tools gcc make tar git unzip sysstat tree
+    # Install system packages.
+    dnf install -y wget vim net-tools gcc make tar git unzip sysstat tree initscripts bind-utils nc nmap logrotate crontabs
+    dnf install -y python-devel python-pip python-setuptools
+    # Install Supervisor.
+    python -m pip install supervisor
+    # Create Supervisor configuration directory.
+    mkdir /etc/supervisord.d
   SHELL
 end
