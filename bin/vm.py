@@ -115,7 +115,7 @@ if __name__=='__main__':
   CLI.add_argument('--action',choices=['start','stop','ssh','provision','destroy'],required=True)
   CLI.add_argument('--os_name',choices=['alma-linux-8','alma-linux-9','amazon-linux-2','centos-linux-7','rocky-linux-8','rocky-linux-9','ubuntu-linux-18-04','ubuntu-linux-22-04'], default=os.environ.get('OS_NAME'), required=not os.environ.get('OS_NAME'), type=VM.validate_os_name)
   CLI.add_argument('--hypervisor', choices=['virtualbox', 'vmware'], default=os.environ.get('HYPERVISOR'), required=not os.environ.get('HYPERVISOR'), type=VM.validate_hypervisor)
-  CLI.add_argument('--architecture', choices=['amd64', 'arm64'], default=os.environ.get('OS_ARCHITECTURE'), required=not os.environ.get('OS_ARCHITECTURE'), type=VM.validate_architecture)
+  CLI.add_argument('--architecture', choices=['amd64', 'arm64'], default=os.environ.get('ARCHITECTURE'), required=not os.environ.get('ARCHITECTURE'), type=VM.validate_architecture)
   CLI.add_argument('--os_edition', choices=['server', 'desktop'], default=os.environ.get('OS_EDITION'), required=not os.environ.get('OS_EDITION'), type=VM.validate_os_edition)
   CLI.add_argument('--host_os', choices=['windows', 'mac', 'ubuntu'], default=os.environ.get('HOST_OS'), required=not os.environ.get('HOST_OS'), type=VM.validate_host_os)
 
@@ -126,31 +126,31 @@ if __name__=='__main__':
   os_edition = Args.os_edition
   host_os = Args.host_os
 
-if Args.host_os == 'windows':
-  vagrantfile_path = "C:\\Program Files\\Git\\opt\\kickstart-linux\\vagrant\\{}\\{}\\{}\\{}".format(os_name, hypervisor, architecture, os_edition)
-  if Args.action=='start':
-    VM().start(vagrantfile_path)
-  elif Args.action=='stop':
-    VM().stop(vagrantfile_path)
-  elif Args.action=='ssh':
-    VM().ssh(vagrantfile_path)
-  elif Args.action=='provision':
-    VM().provision(vagrantfile_path)
-  elif Args.action=='destroy':
-    VM().destroy(vagrantfile_path)
+  if Args.host_os == 'windows':
+    vagrantfile_path = "C:\\Program Files\\Git\\opt\\kickstart-linux\\vagrant\\{}\\{}\\{}\\{}".format(os_name, hypervisor, architecture, os_edition)
+    if Args.action=='start':
+      VM().start(vagrantfile_path)
+    elif Args.action=='stop':
+      VM().stop(vagrantfile_path)
+    elif Args.action=='ssh':
+      VM().ssh(vagrantfile_path)
+    elif Args.action=='provision':
+      VM().provision(vagrantfile_path)
+    elif Args.action=='destroy':
+      VM().destroy(vagrantfile_path)
+    else:
+      print('Please provide a valid action.')
   else:
-    print('Please provide a valid action.')
-else:
-  vagrantfile_path = "/opt/kickstart-linux/vagrant/{}/{}/{}/{}".format(os_name, hypervisor, architecture, os_edition)
-  if Args.action=='start':
-    VM().start(vagrantfile_path)
-  elif Args.action=='stop':
-    VM().stop(vagrantfile_path)
-  elif Args.action=='ssh':
-    VM().ssh(vagrantfile_path)
-  elif Args.action=='provision':
-    VM().provision(vagrantfile_path)
-  elif Args.action=='destroy':
-    VM().destroy(vagrantfile_path)
-  else:
-    print('Please provide a valid action.')
+    vagrantfile_path = "/opt/kickstart-linux/vagrant/{}/{}/{}/{}".format(os_name, hypervisor, architecture, os_edition)
+    if Args.action=='start':
+      VM().start(vagrantfile_path)
+    elif Args.action=='stop':
+      VM().stop(vagrantfile_path)
+    elif Args.action=='ssh':
+      VM().ssh(vagrantfile_path)
+    elif Args.action=='provision':
+      VM().provision(vagrantfile_path)
+    elif Args.action=='destroy':
+      VM().destroy(vagrantfile_path)
+    else:
+      print('Please provide a valid action.')
