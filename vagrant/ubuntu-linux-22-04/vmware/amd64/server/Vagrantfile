@@ -70,9 +70,6 @@ Vagrant.configure("2") do |config|
 
     # Allocate processors to the virtual machine.
     vf.cpus = "1"
-
-    # Set name for the virtual machine.
-    vf.name = "sloopstash-ubuntu-linux-22-04-server"
   end
   #
   # View the documentation for the provider you are using for more
