@@ -15,11 +15,11 @@ Vagrant.configure("2") do |config|
   config.vm.box = "sloopstash/ubuntu-linux-18-04"
   config.vm.box_version = "1.1.1"
 
-  # Define virtual machine name.
-  config.vm.define "sloopstash-ubuntu-linux-18-04-server"
+ # Define virtual machine name.
+  config.vm.define "sloopstash-ubuntu-linux-18-04-server-test"
 
   # Set virtual machine hostname.
-  config.vm.hostname = "sloopstash-ubuntu-linux-18-04-server"
+  config.vm.hostname = "sloopstash-ubuntu-linux-18-04-server-test"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -75,7 +75,7 @@ Vagrant.configure("2") do |config|
     vb.cpus = "1"
 
     # Set name for the virtual machine.
-    vb.name = "sloopstash-ubuntu-linux-18-04-server"
+    vb.name = "sloopstash-ubuntu-linux-18-04-server-test"
   end
   #
   # View the documentation for the provider you are using for more
@@ -85,11 +85,73 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    # Check for package updates.
     apt update
-    # Upgrade installed packages if update is available.
     apt upgrade -y
-    # Install system packages.
-    apt install -y wget vim net-tools gcc make tar git unzip sysstat tree netcat nmap
+    apt install -y wget vim net-tools gcc make tar git unzip sysstat tree
   SHELL
+
+  # Install Ansible tools.
+  config.vm.provision "ansible_tools", type: "shell", run: "never" do |shell|
+    shell.inline = <<-SHELL
+      if ! command -v ansible >/dev/null; then
+        if ! command -v pip >/dev/null; then
+          echo "pip not found. Installing pip."
+          apt install -y python-pip && \
+          pip install --upgrade pip
+        else
+          echo "pip is already installed."
+        fi
+        echo "Ansible not found. Installing Ansible. "
+        pip install ansible
+      else
+        echo "Ansible is already installed."
+      fi
+    SHELL
+  end
+
+  # Install Chef tools.
+  config.vm.provision "chef_tools", type: "shell", run: "never" do |shell|
+    shell.inline = <<-SHELL
+      if ! command -v chef-client >/dev/null; then
+        echo "Chef not found. Installing Chef infra client. "
+        wget https://packages.chef.io/files/stable/chef/18.3.0/ubuntu/18.04/chef_18.3.0-1_amd64.deb -P /tmp --quiet && \
+        dpkg -i /tmp/chef_18.3.0-1_amd64.deb
+      else
+        echo "Chef is already installed."
+      fi
+    SHELL
+  end
+
+  # Setup our Ansible starter-kit from GitHub.
+  config.vm.provision "ansible_starter_kit", type: "shell", run: "never" do |shell|
+    shell.inline = <<-SHELL
+      ansible_starter_kit_path="/opt/kickstart-ansible"
+      if test -d "$ansible_starter_kit_path"; then
+          echo "Directory exists. Pulling latest changes."
+          cd "$ansible_starter_kit_path" && \
+          git pull
+      else
+          echo "Directory does not exist. Cloning Repository."
+          # Download Ansible starter-kit from GitHub to local filesystem path.
+          git clone https://github.com/sloopstash/kickstart-ansible.git "$ansible_starter_kit_path" && \
+          chown -R vagrant:vagrant "$ansible_starter_kit_path"
+      fi
+    SHELL
+  end
+
+  # Setup our Chef starter-kit from GitHub.
+  config.vm.provision "chef_starter_kit", type: "shell", run: "never" do |shell|
+    shell.inline = <<-SHELL
+      chef_starter_kit_path="/opt/kickstart-chef"
+      if test -d "$chef_starter_kit_path"; then
+          echo "Directory exists. Pulling latest changes."
+          cd "$chef_starter_kit_path" && \
+          git pull
+      else
+          echo "Directory does not exist. Cloning Repository."
+          git clone https://github.com/sloopstash/kickstart-chef.git "$chef_starter_kit_path" && \
+          chown -R vagrant:vagrant "$chef_starter_kit_path"
+      fi
+    SHELL
+  end
 end
