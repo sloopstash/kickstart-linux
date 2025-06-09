@@ -88,11 +88,121 @@ Vagrant.configure("2") do |config|
     # Update installed packages.
     dnf update -y
     # Install system packages.
-    dnf install -y wget vim net-tools gcc make tar git unzip sysstat tree initscripts bind-utils nc nmap logrotate crontabs
+    dnf install -y wget vim nano net-tools gcc make tar git unzip sysstat tree initscripts bind-utils nc nmap logrotate crontabs
     dnf install -y python-devel python-pip python-setuptools
     # Install Supervisor.
     python -m pip install supervisor
     # Create Supervisor configuration directory.
     mkdir /etc/supervisord.d
   SHELL
+
+  # Define multiple virtual machines.
+  config.vm.define "sloopstash-dkr-mgr-1", autostart: false do |sloopstash_dkr_mgr_1|
+    sloopstash_dkr_mgr_1.vm.hostname = "sloopstash-dkr-mgr-1"
+    sloopstash_dkr_mgr_1.vm.network "private_network", ip: "192.168.101.51"
+    sloopstash_dkr_mgr_1.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-dkr-mgr-1"
+    end
+  end
+  config.vm.define "sloopstash-dkr-mgr-2", autostart: false do |sloopstash_dkr_mgr_2|
+    sloopstash_dkr_mgr_2.vm.hostname = "sloopstash-dkr-mgr-2"
+    sloopstash_dkr_mgr_2.vm.network "private_network", ip: "192.168.101.52"
+    sloopstash_dkr_mgr_2.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-dkr-mgr-2"
+    end
+  end
+  config.vm.define "sloopstash-dkr-wkr-1", autostart: false do |sloopstash_dkr_wkr_1|
+    sloopstash_dkr_wkr_1.vm.hostname = "sloopstash-dkr-wkr-1"
+    sloopstash_dkr_wkr_1.vm.network "private_network", ip: "192.168.101.54"
+    sloopstash_dkr_wkr_1.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-dkr-wkr-1"
+    end
+  end
+  config.vm.define "sloopstash-dkr-wkr-2", autostart: false do |sloopstash_dkr_wkr_2|
+    sloopstash_dkr_wkr_2.vm.hostname = "sloopstash-dkr-wkr-2"
+    sloopstash_dkr_wkr_2.vm.network "private_network", ip: "192.168.101.55"
+    sloopstash_dkr_wkr_2.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-dkr-wkr-2"
+    end
+  end
+  config.vm.define "sloopstash-dkr-wkr-3", autostart: false do |sloopstash_dkr_wkr_3|
+    sloopstash_dkr_wkr_3.vm.hostname = "sloopstash-dkr-wkr-3"
+    sloopstash_dkr_wkr_3.vm.network "private_network", ip: "192.168.101.56"
+    sloopstash_dkr_wkr_3.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-dkr-wkr-3"
+    end
+  end
+  config.vm.define "sloopstash-k8s-mtr-1", autostart: false do |sloopstash_k8s_mtr_1|
+    sloopstash_k8s_mtr_1.vm.hostname = "sloopstash-k8s-mtr-1"
+    sloopstash_k8s_mtr_1.vm.network "private_network", ip: "192.168.101.61"
+    sloopstash_k8s_mtr_1.vm.provider "virtualbox" do |vb|
+      vb.memory = "3072"
+      vb.cpus = "2"
+      vb.name = "sloopstash-k8s-mtr-1"
+    end
+  end
+  config.vm.define "sloopstash-k8s-mtr-2", autostart: false do |sloopstash_k8s_mtr_2|
+    sloopstash_k8s_mtr_2.vm.hostname = "sloopstash-k8s-mtr-2"
+    sloopstash_k8s_mtr_2.vm.network "private_network", ip: "192.168.101.62"
+    sloopstash_k8s_mtr_2.vm.provider "virtualbox" do |vb|
+      vb.memory = "3072"
+      vb.cpus = "2"
+      vb.name = "sloopstash-k8s-mtr-2"
+    end
+  end
+  config.vm.define "sloopstash-k8s-wkr-1", autostart: false do |sloopstash_k8s_wkr_1|
+    sloopstash_k8s_wkr_1.vm.hostname = "sloopstash-k8s-wkr-1"
+    sloopstash_k8s_wkr_1.vm.network "private_network", ip: "192.168.101.64"
+    sloopstash_k8s_wkr_1.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-k8s-wkr-1"
+    end
+  end
+  config.vm.define "sloopstash-k8s-wkr-2", autostart: false do |sloopstash_k8s_wkr_2|
+    sloopstash_k8s_wkr_2.vm.hostname = "sloopstash-k8s-wkr-2"
+    sloopstash_k8s_wkr_2.vm.network "private_network", ip: "192.168.101.65"
+    sloopstash_k8s_wkr_2.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-k8s-wkr-2"
+    end
+  end
+  config.vm.define "sloopstash-k8s-wkr-3", autostart: false do |sloopstash_k8s_wkr_3|
+    sloopstash_k8s_wkr_3.vm.hostname = "sloopstash-k8s-wkr-3"
+    sloopstash_k8s_wkr_3.vm.network "private_network", ip: "192.168.101.66"
+    sloopstash_k8s_wkr_3.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "1"
+      vb.name = "sloopstash-k8s-wkr-3"
+    end
+  end
+  config.vm.define "sloopstash-chef-automate", autostart: false do |sloopstash_chef_automate|
+    sloopstash_chef_automate.vm.hostname = "sloopstash-chef-automate"
+    sloopstash_chef_automate.vm.network "private_network", ip: "192.168.101.71"
+    sloopstash_chef_automate.vm.provider "virtualbox" do |vb|
+      vb.memory = "8192"
+      vb.cpus = "2"
+      vb.name = "sloopstash-chef-automate"
+    end
+  end
+  config.vm.define "sloopstash-chef-infra-server", autostart: false do |sloopstash_chef_infra_server|
+    sloopstash_chef_infra_server.vm.hostname = "sloopstash-chef-infra-server"
+    sloopstash_chef_infra_server.vm.network "private_network", ip: "192.168.101.72"
+    sloopstash_chef_infra_server.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = "1"
+      vb.name = "sloopstash-chef-infra-server"
+    end
+  end
 end
