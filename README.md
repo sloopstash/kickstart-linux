@@ -1,9 +1,8 @@
-# Kickstart Linux
-Automate deployment of a variety of Linux VMs on Windows, Mac, and Linux operating systems using VirtualBox, VMware, and Vagrant.
+# SloopStash Linux starter-kit
 
 
 ## Getting started
-Please refer to the [wiki](https://github.com/sloopstash/kickstart-linux/wiki) for detailed instructions on how to get started with our Linux starter-kit.
+Please refer to the [documentation](https://sloopstash.com/documentation/toolkit/vm/linux/index.html) for detailed instructions on how to get started with SloopStash Linux starter-kit.
 
 
 ## Get support
