@@ -82,8 +82,28 @@ Vagrant.configure("2") do |config|
     # Check for package updates.
     apt update
     # Upgrade installed packages if update is available.
-    apt upgrade -y
+    # IMPORTANT: Disabled system upgrade to prevent getting blocked due to GRUB
+    # install device selection prompt.
+    # apt upgrade -y
     # Install system packages.
-    apt install -y wget vim net-tools gcc make tar git unzip sysstat tree netcat nmap
+    apt install -y wget vim net-tools gcc make tar git unzip sysstat tree netcat-traditional nmap
   SHELL
+
+  # Define multiple virtual machines.
+  config.vm.define "sloopstash-dev-ubuntu-linux-24-04-server", autostart: false do |sloopstash_dev_ubuntu_linux_24_04_server|
+    sloopstash_dev_ubuntu_linux_24_04_server.vm.hostname = "sloopstash-dev-ubuntu-linux-24-04-server"
+    sloopstash_dev_ubuntu_linux_24_04_server.vm.network "private_network", ip: "192.168.201.101"
+    sloopstash_dev_ubuntu_linux_24_04_server.vm.provider "vmware_fusion" do |vf|
+      vf.memory = "4096"
+      vf.cpus = "1"
+    end
+  end
+  config.vm.define "sloopengine-dev-ubuntu-linux-24-04-server", autostart: false do |sloopengine_dev_ubuntu_linux_24_04_server|
+    sloopengine_dev_ubuntu_linux_24_04_server.vm.hostname = "sloopengine-dev-ubuntu-linux-24-04-server"
+    sloopengine_dev_ubuntu_linux_24_04_server.vm.network "private_network", ip: "192.168.201.151"
+    sloopengine_dev_ubuntu_linux_24_04_server.vm.provider "vmware_fusion" do |vf|
+      vf.memory = "4096"
+      vf.cpus = "1"
+    end
+  end
 end
