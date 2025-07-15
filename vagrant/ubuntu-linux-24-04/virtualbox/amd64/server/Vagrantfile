@@ -111,7 +111,7 @@ Vagrant.configure("2") do |config|
     sloopengine_dev_ubuntu_linux_24_04_server.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"
       vb.cpus = "1"
-      vb.name = "sloopstash-dev-ubuntu-linux-24-04-server"
+      vb.name = "sloopengine-dev-ubuntu-linux-24-04-server"
     end
   end
 end
