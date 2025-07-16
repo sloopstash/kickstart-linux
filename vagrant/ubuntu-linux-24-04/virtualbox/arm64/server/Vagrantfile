@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
     vb.gui = false
   
     # Allocate memory to the virtual machine.
-    vb.memory = "2048"
+    vb.memory = "4096"
 
     # Allocate processors to the virtual machine.
     vb.cpus = "1"
